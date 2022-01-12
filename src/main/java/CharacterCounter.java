@@ -1,45 +1,36 @@
 package main.java;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CharacterCounter {
 
-    private static LinkedHashMap<String, Integer> cache = new LinkedHashMap<>();
+    private static Map<String, LinkedHashMap<Character, Integer>> cache = new HashMap<>();
 
-    public LinkedHashMap<String, Integer> countTheNumberOfCharactersInTheString(String str) {
-
+    public LinkedHashMap<Character, Integer> count(String str) {
         requiredNonNull(str);
-
-        String[] splitString = str.split("");
-
-        LinkedHashSet<String> listSymbols = new LinkedHashSet<>(Arrays.asList(splitString));
-
-        LinkedHashMap<String, Integer> count = new LinkedHashMap<>();
-
-        for (String s1 : listSymbols) {
-//            if(listSymbols.equals(cache)){
-//                return cache;
-//            }
-            int num = 0;
-            for (int i = 0; i < splitString.length; i++) {
-                if (s1.equals(splitString[i])) {
-                    num++;
-                }
-            }
-            count.put(s1, num);
+        if (cache.containsKey(str)) {
+            return cache.get(str);
         }
-
-//        cache.putAll(count);
-        System.out.println(str);
-        return count;
+        LinkedHashMap<Character, Integer> newCache = createNewCacheCount(str);
+        cache.put(str, newCache);
+        return newCache;
     }
 
-    public void makeView(LinkedHashMap<String, Integer> map) {
-        Set<Map.Entry<String, Integer>> entries = map.entrySet();
-        for (Map.Entry<String, Integer> entry : entries) {
-            System.out.println("\"" + entry.getKey() + "\"" + " - " + entry.getValue());
-        }
+    private LinkedHashMap<Character, Integer> createNewCacheCount(String str) {
+        LinkedHashMap<Character, Integer> map = new LinkedHashMap<>();
+        char[] symbols = str.toCharArray();
 
+        for (char c : symbols) {
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) + 1);
+
+            } else {
+                map.put(c, 1);
+            }
+        }
+        return map;
     }
 
     private void requiredNonNull(String str) {
@@ -48,5 +39,3 @@ public class CharacterCounter {
         }
     }
 }
-
-
