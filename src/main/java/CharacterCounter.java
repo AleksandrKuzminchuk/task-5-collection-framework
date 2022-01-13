@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class CharacterCounter {
 
-    private static Map<String, LinkedHashMap<Character, Integer>> cache = new HashMap<>();
+    private static final Map<String, LinkedHashMap<Character, Integer>> cache = new HashMap<>();
 
     public LinkedHashMap<Character, Integer> count(String str) {
         requiredNonNull(str);
@@ -16,6 +16,11 @@ public class CharacterCounter {
         LinkedHashMap<Character, Integer> newCache = createNewCacheCount(str);
         cache.put(str, newCache);
         return newCache;
+    }
+
+    public Map<String, LinkedHashMap<Character, Integer>> getCacheCopy(){
+
+        return new HashMap<>(cache);
     }
 
     private LinkedHashMap<Character, Integer> createNewCacheCount(String str) {
